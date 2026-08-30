@@ -41,43 +41,47 @@ Follow these steps to set up and run your bot using this template:
 
 3. **Launching the Bot**
 
+    This template uses [pnpm](https://pnpm.io/) as its package manager. If you don't have it installed, run `npm install -g pnpm` first.
+
     You can run your bot in both development and production modes.
 
     **Development Mode:**
 
     Install the required dependencies:
     ```bash
-    npm install
+    pnpm install
     ```
     Start the bot in watch mode (auto-reload when code changes):
     ```bash
-    npm run dev
+    pnpm run dev
     ```
 
    **Production Mode:**
 
     Install only production dependencies:
     ```bash
-    npm install --only=prod
+    pnpm install --prod
     ```
 
     Set `DEBUG` environment variable to `false` in your `.env` file.
 
     Start the bot in production mode:
     ```bash
-    npm run start:force # skip type checking and start
+    pnpm run start:force # skip type checking and start
     # or
-    npm start # with type checking (requires development dependencies)
+    pnpm start # with type checking (requires development dependencies)
     ```
 
 ### List of Available Commands
 
-- `npm run lint` — Lint source code.
-- `npm run format` — Format source code.
-- `npm run typecheck` — Run type checking.
-- `npm run dev` — Start the bot in development mode.
-- `npm run start` — Start the bot.
-- `npm run start:force` — Starts the bot without type checking.
+- `pnpm run lint` — Lint source code.
+- `pnpm run format` — Format source code.
+- `pnpm run typecheck` — Run type checking.
+- `pnpm run test` — Run tests (vitest).
+- `pnpm run test:watch` — Run tests in watch mode.
+- `pnpm run dev` — Start the bot in development mode.
+- `pnpm run start` — Start the bot.
+- `pnpm run start:force` — Starts the bot without type checking.
 
 ### Directory Structure
 
@@ -239,13 +243,13 @@ git merge template/example/runtime-bun -X theirs --squash --no-commit --allow-un
 
 ```sh
 # remove Node-related dependencies
-npm r @types/node tsx tsc-watch
+pnpm remove @types/node tsx tsc-watch
 
 # install dependencies
 bun i
 
-# remove npm lockfile
-rm package-lock.json
+# remove pnpm lockfile
+rm pnpm-lock.yaml
 
 # install bun typings
 bun add -d @types/bun

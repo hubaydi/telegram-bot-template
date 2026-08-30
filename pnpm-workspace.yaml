@@ -1,0 +1,12 @@
+# pnpm settings live here (pnpm 11 no longer reads the "pnpm" field in package.json).
+# Build scripts of these well-known packages are required for their native
+# binaries to be set up correctly; everything else stays blocked by default.
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+
+# eslint-plugin-unicorn (pulled by @antfu/eslint-config) still ranges
+# @eslint/plugin-kit at ^0.2.x (<0.3.4, GHSA-xffm-g5w8-qvg7). Force the
+# patched version for that edge only; other consumers keep their own ranges.
+overrides:
+  eslint-plugin-unicorn>@eslint/plugin-kit: 0.3.4
