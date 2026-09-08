@@ -5,11 +5,11 @@
   "private": true,
   "packageManager": "pnpm@11.7.0",
   "description": "Telegram bot starter template",
+  "author": "deptyped <deptyped@gmail.com>",
+  "license": "MIT",
   "imports": {
     "#root/*": "./build/src/*"
   },
-  "author": "deptyped <deptyped@gmail.com>",
-  "license": "MIT",
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=8.0.0"
@@ -28,31 +28,30 @@
   },
   "dependencies": {
     "@grammyjs/auto-chat-action": "0.1.1",
-    "@grammyjs/commands": "1.0.8",
-    "@grammyjs/hydrate": "1.4.1",
+    "@grammyjs/commands": "1.4.0",
+    "@grammyjs/hydrate": "1.7.0",
     "@grammyjs/i18n": "1.1.2",
-    "@grammyjs/parse-mode": "1.11.1",
     "@grammyjs/runner": "2.0.3",
-    "@grammyjs/types": "3.20.0",
-    "@hono/node-server": "1.19.17",
+    "@grammyjs/types": "5.0.0",
+    "@hono/node-server": "2.1.1",
     "callback-data": "1.1.1",
-    "grammy": "1.36.1",
-    "hono": "4.13.5",
-    "iso-639-1": "3.1.5",
-    "pino": "9.9.0",
-    "pino-pretty": "13.0.0",
-    "tsx": "4.20.4",
-    "valibot": "0.42.1"
+    "grammy": "1.46.0",
+    "hono": "4.13.7",
+    "iso-639-1": "3.1.6",
+    "pino": "10.3.1",
+    "pino-pretty": "13.1.3",
+    "tsx": "4.23.13",
+    "valibot": "1.4.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "4.12.0",
-    "@types/node": "^22.15.21",
-    "eslint": "^9.27.0",
+    "@antfu/eslint-config": "9.5.1",
+    "@types/node": "^26.5.0",
+    "eslint": "^10.10.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.1",
-    "tsc-watch": "^6.3.1",
-    "typescript": "^5.9.2",
-    "vitest": "^4.1.11"
+    "lint-staged": "^17.5.0",
+    "tsc-watch": "^7.2.1",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.0"
   },
   "lint-staged": {
     "*.ts": "eslint"

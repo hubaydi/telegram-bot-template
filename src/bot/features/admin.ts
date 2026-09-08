@@ -1,9 +1,9 @@
 import type { Context } from '#root/bot/context.js'
+import { chatAction } from '@grammyjs/auto-chat-action'
+import { Composer } from 'grammy'
 import { isAdmin } from '#root/bot/filters/is-admin.js'
 import { setCommandsHandler } from '#root/bot/handlers/commands/setcommands.js'
 import { logHandle } from '#root/bot/helpers/logging.js'
-import { chatAction } from '@grammyjs/auto-chat-action'
-import { Composer } from 'grammy'
 
 const composer = new Composer<Context>()
 

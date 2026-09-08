@@ -1,14 +1,14 @@
 #!/usr/bin/env tsx
 /* eslint-disable antfu/no-top-level-await */
 
-import type { PollingConfig, WebhookConfig } from '#root/config.js'
 import type { RunnerHandle } from '@grammyjs/runner'
+import type { PollingConfig, WebhookConfig } from '#root/config.js'
 import process from 'node:process'
+import { run } from '@grammyjs/runner'
 import { createBot } from '#root/bot/index.js'
 import { config } from '#root/config.js'
 import { logger } from '#root/logger.js'
 import { createServer, createServerManager } from '#root/server/index.js'
-import { run } from '@grammyjs/runner'
 
 async function startPolling(config: PollingConfig) {
   const bot = createBot(config.botToken, {

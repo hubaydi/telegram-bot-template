@@ -66,10 +66,10 @@ function createConfigFromEnvironment() {
     return str.toLowerCase().replace(/_([a-z])/g, (_match, p1) => p1.toUpperCase())
   }
 
-  function convertKeysToCamelCase<T>(obj: T): KeysToCamelCase<T> {
+  function convertKeysToCamelCase<T extends object>(obj: T): KeysToCamelCase<T> {
     const result: any = {}
     for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      if (Object.hasOwn(obj, key)) {
         const camelCaseKey = toCamelCase(key)
         result[camelCaseKey] = obj[key]
       }
