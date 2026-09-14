@@ -1,11 +1,12 @@
 import type { BotConfig } from 'grammy'
 import type { Context } from '#root/bot/context.js'
 import type { Config } from '#root/config.js'
+import type { Database } from '#root/db/client.js'
 import type { Logger } from '#root/logger.js'
 import { autoChatAction } from '@grammyjs/auto-chat-action'
 import { hydrate } from '@grammyjs/hydrate'
 import { sequentialize } from '@grammyjs/runner'
-import { MemorySessionStorage, Bot as TelegramBot } from 'grammy'
+import { Bot as TelegramBot } from 'grammy'
 import { adminFeature } from '#root/bot/features/admin.js'
 import { languageFeature } from '#root/bot/features/language.js'
 import { unhandledFeature } from '#root/bot/features/unhandled.js'
@@ -14,10 +15,12 @@ import { errorHandler } from '#root/bot/handlers/error.js'
 import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
 import { session } from '#root/bot/middlewares/session.js'
 import { updateLogger } from '#root/bot/middlewares/update-logger.js'
+import { createSessionStorage } from '#root/db/session-storage.js'
 
 interface Dependencies {
   config: Config
   logger: Logger
+  db: Database
 }
 
 function getSessionKey(ctx: Omit<Context, 'session'>) {
@@ -28,6 +31,7 @@ export function createBot(token: string, dependencies: Dependencies, botConfig?:
   const {
     config,
     logger,
+    db,
   } = dependencies
 
   const bot = new TelegramBot<Context>(token, botConfig)
@@ -52,7 +56,7 @@ export function createBot(token: string, dependencies: Dependencies, botConfig?:
   protectedBot.use(hydrate())
   protectedBot.use(session({
     getSessionKey,
-    storage: new MemorySessionStorage(),
+    storage: createSessionStorage(db),
   }))
   protectedBot.use(i18n)
 

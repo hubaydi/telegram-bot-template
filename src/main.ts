@@ -3,17 +3,21 @@
 
 import type { RunnerHandle } from '@grammyjs/runner'
 import type { PollingConfig, WebhookConfig } from '#root/config.js'
+import type { Database } from '#root/db/client.js'
 import process from 'node:process'
 import { run } from '@grammyjs/runner'
 import { createBot } from '#root/bot/index.js'
 import { config } from '#root/config.js'
+import { createDatabase } from '#root/db/client.js'
+import { runMigrations } from '#root/db/migrate.js'
 import { logger } from '#root/logger.js'
 import { createServer, createServerManager } from '#root/server/index.js'
 
-async function startPolling(config: PollingConfig) {
+async function startPolling(config: PollingConfig, db: Database) {
   const bot = createBot(config.botToken, {
     config,
     logger,
+    db,
   })
   let runner: undefined | RunnerHandle
 
@@ -43,10 +47,11 @@ async function startPolling(config: PollingConfig) {
   })
 }
 
-async function startWebhook(config: WebhookConfig) {
+async function startWebhook(config: WebhookConfig, db: Database) {
   const bot = createBot(config.botToken, {
     config,
     logger,
+    db,
   })
   const server = createServer({
     bot,
@@ -86,10 +91,13 @@ async function startWebhook(config: WebhookConfig) {
 }
 
 try {
+  const db = createDatabase(config.databaseFile)
+  runMigrations(db)
+
   if (config.isWebhookMode)
-    await startWebhook(config)
+    await startWebhook(config, db)
   else if (config.isPollingMode)
-    await startPolling(config)
+    await startPolling(config, db)
 }
 catch (error) {
   logger.error(error)

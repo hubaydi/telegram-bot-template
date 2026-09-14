@@ -8,6 +8,7 @@ const baseConfigSchema = z.object({
   botToken: z.string().regex(/^\d+:[\w-]+$/, 'Invalid token'),
   botAllowedUpdates: z.string().transform(json => JSON.parse(json)).pipe(z.array(z.enum(API_CONSTANTS.ALL_UPDATE_TYPES))).default([]),
   botAdmins: z.string().transform(json => JSON.parse(json)).pipe(z.array(z.number())).default([]),
+  databaseFile: z.string().default('./data/bot.sqlite'),
 })
 
 const configSchema = z.discriminatedUnion('botMode', [

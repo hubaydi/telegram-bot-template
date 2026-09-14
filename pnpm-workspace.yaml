@@ -2,6 +2,7 @@
 # Build scripts of these well-known packages are required for their native
 # binaries to be set up correctly; everything else stays blocked by default.
 allowBuilds:
+  better-sqlite3: true
   esbuild: true
   unrs-resolver: true
 
