@@ -12,16 +12,8 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
 - Graceful shutdown
 - Logger (powered by [pino](https://github.com/pinojs/pino))
 - Ultrafast and multi-runtime server (powered by [hono](https://github.com/honojs/hono))
-- Ready-to-use deployment setups:
-    - [Docker](#docker-dockercom)
-    - [Vercel](#vercel-vercelcom)
-- Examples:
-    - grammY plugins:
-        - [Conversations](#grammy-conversations-grammydevpluginsconversations)
-    - Databases:
-      - [Prisma ORM](#prisma-orm-prismaio)
-    - Runtimes:
-      - [Bun](#bun-bunsh)
+- SQLite persistence with [Drizzle ORM](https://orm.drizzle.team/): sessions and a user repository
+- Tests with [Vitest](https://vitest.dev/)
 
 ## Usage
 
@@ -29,7 +21,7 @@ Follow these steps to set up and run your bot using this template:
 
 1. **Create a New Repository**
 
-    Start by creating a new repository using this template. You can do this by clicking [here](https://github.com/bot-base/telegram-bot-template/generate).
+    Start by creating a new repository using this template. You can do this by clicking [here](https://github.com/hubaydi/telegram-bot-template/generate).
 
 2. **Environment Variables Setup**
 
@@ -87,7 +79,9 @@ Follow these steps to set up and run your bot using this template:
 
 ```
 project-root/
-  ├── locales # Localization files
+  ├── drizzle   # Generated SQL migrations
+  ├── locales   # Localization files
+  ├── tests     # Standalone tests
   └── src
       ├── bot # Code related to bot
       │   ├── callback-data # Callback data builders
@@ -100,6 +94,7 @@ project-root/
       │   ├── i18n.ts       # Internationalization setup
       │   ├── context.ts    # Context object definition
       │   └── index.ts      # Bot entry point
+      ├── db # SQLite client, schema, migrations, repositories
       ├── server # Code related to web server
       │   ├── middlewares   # Server middlewares
       │   ├── environment   # Server environment setup
@@ -111,151 +106,9 @@ project-root/
 
 ## Deploy
 
-### Docker ([docker.com](https://docker.com))
+This fork does not carry the upstream `deploy/*` or `example/*` branches. Deploy it like any Node app: run `pnpm install --prod`, set `BOT_MODE=webhook` plus the `BOT_WEBHOOK*` variables, then `pnpm run start:force`.
 
-Branch:
-[deploy/docker-compose](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose)
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/deploy/docker-compose))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge deployment setup
-
-```sh
-git merge template/deploy/docker-compose -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose#usage) in the `deploy/docker-compose` branch.
-
-### Vercel ([vercel.com](https://vercel.com))
-
-Branch:
-[deploy/vercel](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel)
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/deploy/vercel))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge deployment setup
-
-```sh
-git merge template/deploy/vercel -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel#usage) in the `deploy/vercel` branch.
-
-## Examples
-
-### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
-
-Branch:
-[example/plugin-conversations](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations)
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/plugin-conversations))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/plugin-conversations -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Install dependencies
-
-```sh
-npm i @grammyjs/conversations
-```
-
-4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations#usage) in the `example/plugin-conversations` branch.
-
-### Prisma ORM ([prisma.io](https://prisma.io))
-
-Branch:
-[example/orm-prisma](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma)
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/orm-prisma))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/orm-prisma -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Install dependencies
-
-```sh
-npm i -D prisma
-npm i @prisma/client
-```
-
-4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma#usage) in the `example/orm-prisma` branch.
-
-### Bun ([bun.sh](https://bun.sh))
-
-Branch:
-[example/runtime-bun](https://github.com/bot-base/telegram-bot-template/tree/example/runtime-bun)
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/runtime-bun))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/runtime-bun -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Install dependencies
-
-```sh
-# remove Node-related dependencies
-pnpm remove @types/node tsx tsc-watch
-
-# install dependencies
-bun i
-
-# remove pnpm lockfile
-rm pnpm-lock.yaml
-
-# install bun typings
-bun add -d @types/bun
-```
-
-4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/runtime-bun#usage) in the `example/runtime-bun` branch.
+The Docker, Vercel, Prisma, and Bun variants live in [bot-base/telegram-bot-template](https://github.com/bot-base/telegram-bot-template#deploy). They assume npm and valibot, so expect conflicts if you merge them into this fork.
 
 ## Environment Variables
 
@@ -366,6 +219,17 @@ bun add -d @types/bun
         Administrator user IDs.
         Use this to specify user IDs that have special privileges, such as executing <code>/setcommands</code>. <br/>
         Defaults to an empty array.
+    </td>
+  </tr>
+  <tr>
+    <td>DATABASE_FILE</td>
+    <td>
+        String
+    </td>
+    <td>
+        <i>Optional.</i>
+        Path to the SQLite database file. The directory is created on startup. <br/>
+        Defaults to <code>./data/bot.sqlite</code>.
     </td>
   </tr>
 </tbody>

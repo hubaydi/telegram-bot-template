@@ -1,7 +1,24 @@
+import { existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { createDatabase } from '../src/db/client.js'
 import { createSessionStorage } from '../src/db/session-storage.js'
 import { createUserRepository } from '../src/db/user-repository.js'
+
+describe('createDatabase', () => {
+  it('creates the database directory', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'telegram-bot-template-'))
+    try {
+      const file = join(dir, 'nested', 'bot.sqlite')
+      createDatabase(file)
+      expect(existsSync(file)).toBe(true)
+    }
+    finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+})
 
 function createTestDb() {
   const db = createDatabase(':memory:')
